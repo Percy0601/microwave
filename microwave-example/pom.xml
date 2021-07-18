@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -31,6 +30,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.microwave</groupId>
+      <artifactId>microwave-compiler</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-context</artifactId>
     </dependency>
@@ -43,7 +48,6 @@
     <dependency>
       <groupId>io.microwave</groupId>
       <artifactId>microwave-server-runtime</artifactId>
-      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -64,6 +68,11 @@
 
           <annotationProcessorPaths combine.self="override">
             <path>
+              <groupId>io.microwave</groupId>
+              <artifactId>microwave-compiler</artifactId>
+              <version>1.0-SNAPSHOT</version>
+            </path>
+            <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
               <version>${lombok.version}</version>
@@ -81,7 +90,7 @@
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-Amicronaut.processing.group=io.microwave</arg>
-            <arg>-Amicronaut.processing.module=microwave-server-runtime</arg>
+            <arg>-Amicronaut.processing.module=microwave-example</arg>
           </compilerArgs>
         </configuration>
       </plugin>

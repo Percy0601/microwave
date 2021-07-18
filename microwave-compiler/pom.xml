@@ -5,21 +5,72 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.microwave</groupId>
-  <artifactId>microwave-compile</artifactId>
+  <artifactId>microwave-compiler</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>microwave-compile</name>
+  <name>microwave-compiler</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <javaparser.version>3.22.1</javaparser.version>
+    <logback.version>1.2.3</logback.version>
+    <slf4j-api.version>1.7.31</slf4j-api.version>
+    <lombok.version>1.18.4</lombok.version>
+    <junit.version>5.5.2</junit.version>
+    <commons-collections4.version>4.4</commons-collections4.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>io.microwave</groupId>
+      <artifactId>microwave-annotation</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-symbol-solver-core</artifactId>
+      <version>${javaparser.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>${commons-collections4.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
