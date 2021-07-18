@@ -1,0 +1,20 @@
+package io.microwave.example.listener;
+
+import io.microwave.server.AbstractServerEventListener;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.thrift.TMultiplexedProcessor;
+
+import javax.inject.Singleton;
+
+@Slf4j
+@Singleton
+public class DefaultServerEventListener extends AbstractServerEventListener {
+
+    @Override
+    protected void handleProcessor(TMultiplexedProcessor processor, String beanName, Object bean) {
+//        processor.registerProcessor(beanDefinition.getName(), new SomeService.Processor<>(i));
+    }
+
+
+
+}

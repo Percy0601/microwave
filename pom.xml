@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -12,6 +11,7 @@
     <module>microwave-core</module>
     <module>microwave-server-runtime</module>
     <module>microwave-client-runtime</module>
+    <module>microwave-example</module>
   </modules>
   <packaging>pom</packaging>
 
@@ -40,9 +40,18 @@
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libthrift</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -76,6 +85,11 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>io.microwave</groupId>
+        <artifactId>microwave-annotation</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
       <dependency>
         <groupId>javax.annotation</groupId>
         <artifactId>javax.annotation-api</artifactId>
