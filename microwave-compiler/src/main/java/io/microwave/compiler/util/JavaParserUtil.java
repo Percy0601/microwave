@@ -1,4 +1,4 @@
-package io.microwave.compiler;
+package io.microwave.compiler.util;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
@@ -48,6 +48,9 @@ public class JavaParserUtil {
                     FieldDeclaration bd = (FieldDeclaration)cid.getMember(i++);
                     String name = bd.getVariable(1).getInitializer().get().asStringLiteralExpr().asString();
                     String returnStatement = "new " + name + "()";
+
+                    BlockStmt block = new BlockStmt();
+
                     ReturnStmt statement = new ReturnStmt(returnStatement);
                     statements.add(statement);
                     blockStmt.setStatements(statements);

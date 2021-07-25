@@ -51,9 +51,12 @@ public abstract class AbstractServerEventListener implements ApplicationEventLis
             for(BeanDefinition<?> beanDefinition: beanDefinitions) {
                 Class<?> type = beanDefinition.getBeanType();
                 String name = beanDefinition.getName();
-                Object bean = applicationContext.getBean(type);
-                handleProcessor(processor, name, bean);
-//                processor.registerProcessor(beanDefinition.getName(), name, bean);
+                //Class<?> bean = applicationContext.getBean(type);
+                //Class<?>[] cs = bean.getClass().getClasses();
+
+//                System.out.println("" + cs.length);
+//                handleProcessor(processor, name, bean);
+//                processor.registerProcessor(beanDefinition.getName(), name, new SomeService.Processor<>(bean));
             }
 
             TServer server = new TThreadedSelectorServer(new
