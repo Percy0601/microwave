@@ -3,9 +3,6 @@ package io.microwave.example;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.Micronaut;
 import io.microwave.example.impl.SomeServiceImpl;
-
-import java.io.IOException;
-
 public class Application {
 
     public static void main(String[] args) {
