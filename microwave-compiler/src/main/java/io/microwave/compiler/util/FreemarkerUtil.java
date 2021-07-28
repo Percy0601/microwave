@@ -30,7 +30,7 @@ public class FreemarkerUtil {
             // 第一步：创建一个Configuration对象，直接new一个对象。构造方法的参数就是freemarker对于的版本号。
             Configuration configuration = new Configuration(Configuration.getVersion());
             // 第二步：设置模板文件所在的路径。
-            configuration.setDirectoryForTemplateLoading(new File(getFilePath("")));
+            configuration.setClassForTemplateLoading(FreemarkerUtil.class, "/templates");
             // 第三步：设置模板文件使用的字符集。一般就是utf-8.
             configuration.setDefaultEncoding("utf-8");
             // 第四步：加载一个模板，创建一个模板对象。
@@ -39,15 +39,15 @@ public class FreemarkerUtil {
             // 第五步：创建一个模板使用的数据集，可以是pojo也可以是map。一般是Map。
             Map<String, Object> root = new HashMap();
             // 向数据集中添加数据
-            root.put("hello", "this is my first freemarker test.");
-            root.put("packageName", "this is my first freemarker test.");
-
+            root.put("packageName", packageName);
+            root.put("simpleClassName", simpleClassName);
             // 第六步：创建一个Writer对象，一般创建一FileWriter对象，指定生成的文件名。
             //        Writer out = new FileWriter(new File("/Users/percy/work/project/promogateway/promoGatewayService/src/main/resources/template/response/query/"));
             // 第七步：调用模板对象的process方法输出文件。
             Writer out = new StringWriter();
-            //        Writer out = new OutputStreamWriter(System.out);
-            //template.process(root, writer);
+            if(null != writer) {
+                template.process(root, writer);
+            }
             template.process(root, out);
             log.info("========={}", out.toString());
             // 第八步：关闭流。
@@ -65,11 +65,6 @@ public class FreemarkerUtil {
             log.warn("FreemarkerUtil IOException:{}", ExceptionUtils.getStackTrace(e));
         }
 
-    }
-
-    public static String getFilePath(String fileName) {
-        URL url = FreemarkerUtil.class.getClassLoader().getResource("templates/" + fileName);
-        return url.getPath();
     }
 
 }

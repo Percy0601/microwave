@@ -1,7 +1,6 @@
 package io.microwave;
 
 
-import io.microwave.compiler.util.FreemarkerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +20,4 @@ public class AppTest {
         assertTrue( true );
     }
 
-    @Test
-    void test() {
-        String aa = FreemarkerUtil.getFilePath("microwave-server.ftl");
-
-        log.info("========={}", aa);
-        FreemarkerUtil.handleServer("javax.inject.Inject", null);
-    }
 }

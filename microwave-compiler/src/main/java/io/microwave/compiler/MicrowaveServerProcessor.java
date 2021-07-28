@@ -1,5 +1,6 @@
 package io.microwave.compiler;
 
+import io.microwave.compiler.util.FreemarkerUtil;
 import io.microwave.compiler.util.MetaHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileObject;
+import java.io.IOException;
 import java.util.Set;
 
 @SupportedAnnotationTypes(value = {"io.microwave.annotation.MicrowaveServer"})
@@ -32,6 +35,14 @@ public class MicrowaveServerProcessor extends AbstractProcessor {
         log.info("开始处理注解类MicrowaveServerProcessor:{}", annotatedClass);
         if(!annotationElement.toString().equals("io.microwave.annotation.MicrowaveServer")) {
             return;
+        }
+
+        try {
+            String className = annotatedClass.toString() + "001";
+            JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(className);
+            FreemarkerUtil.handleServer(annotatedClass.toString(), builderFile.openWriter());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
