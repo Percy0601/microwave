@@ -18,13 +18,8 @@ import java.util.Map;
 public class FreemarkerUtil {
 
     public static void handleServer(String className, Writer writer) {
-
-        String packageName = null;
-        int lastDot = className.lastIndexOf('.');
-        if (lastDot > 0) {
-            packageName = className.substring(0, lastDot);
-        }
-        String simpleClassName = className.substring(lastDot + 1);
+        String packageName = ClassNameUtil.getPackageName(className);
+        String simpleClassName = ClassNameUtil.getSimpleClassName(className);
         //Resource resource = new ClassPathResource("template/");
         try {
             // 第一步：创建一个Configuration对象，直接new一个对象。构造方法的参数就是freemarker对于的版本号。
@@ -52,6 +47,8 @@ public class FreemarkerUtil {
             log.info("========={}", out.toString());
             // 第八步：关闭流。
             out.close();
+            writer.flush();
+            writer.close();
         } catch (TemplateException e) {
             log.warn("FreemarkerUtil TemplateException:{}", ExceptionUtils.getStackTrace(e));
         } catch (TemplateNotFoundException e) {

@@ -6,6 +6,7 @@ import io.micronaut.context.event.StartupEvent;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.microwave.annotation.ExportService;
+import io.microwave.annotation.MicrowaveServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -18,11 +19,13 @@ import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.transport.TTransportFactory;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
-public abstract class ${simpleClassName} implements ApplicationEventListener<StartupEvent> {
+@Singleton
+public class ${simpleClassName} implements ApplicationEventListener<StartupEvent> {
     private AtomicBoolean status = new AtomicBoolean(false);
 
     @Inject
@@ -30,6 +33,7 @@ public abstract class ${simpleClassName} implements ApplicationEventListener<Sta
 
     @Override
     public void onApplicationEvent(StartupEvent event) {
+        log.info("##########################");
         if(status.get()) {
             return;
         }
@@ -49,21 +53,21 @@ public abstract class ${simpleClassName} implements ApplicationEventListener<Sta
             //发布多个服务
             TMultiplexedProcessor processor = new TMultiplexedProcessor();
             for(BeanDefinition<?> beanDefinition: beanDefinitions) {
-            Class<?> type = beanDefinition.getBeanType();
-            String name = beanDefinition.getName();
-            //Class<?> bean = applicationContext.getBean(type);
-            //Class<?>[] cs = bean.getClass().getClasses();
+                Class<?> type = beanDefinition.getBeanType();
+                String name = beanDefinition.getName();
+                //Class<?> bean = applicationContext.getBean(type);
+                //Class<?>[] cs = bean.getClass().getClasses();
 
-            //                System.out.println("" + cs.length);
-            //                handleProcessor(processor, name, bean);
-            //                processor.registerProcessor(beanDefinition.getName(), name, new SomeService.Processor<>(bean));
+//                System.out.println("" + cs.length);
+//                handleProcessor(processor, name, bean);
+//                processor.registerProcessor(beanDefinition.getName(), name, new SomeService.Processor<>(bean));
             }
 
             TServer server = new TThreadedSelectorServer(new
-            TThreadedSelectorServer.Args(serverTransport)
-                .transportFactory(transportFactory)
-                .protocolFactory(proFactory)
-                .processor(processor)
+                    TThreadedSelectorServer.Args(serverTransport)
+                    .transportFactory(transportFactory)
+                    .protocolFactory(proFactory)
+                    .processor(processor)
             );
             server.serve();
         } catch (TTransportException e) {
@@ -71,7 +75,9 @@ public abstract class ${simpleClassName} implements ApplicationEventListener<Sta
         }
     }
 
-    protected abstract void handleProcessor(TMultiplexedProcessor processor, String beanName, Object bean){
 
+    protected void handleProcessor(TMultiplexedProcessor processor, String beanName, Object bean) {
+//        processor.registerProcessor(beanDefinition.getName(), new SomeService.Processor<>(i));
     }
-    }
+
+}

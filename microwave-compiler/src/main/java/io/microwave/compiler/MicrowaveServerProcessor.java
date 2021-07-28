@@ -1,7 +1,9 @@
 package io.microwave.compiler;
 
+import io.microwave.compiler.util.ClassNameUtil;
 import io.microwave.compiler.util.FreemarkerUtil;
 import io.microwave.compiler.util.MetaHolder;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +40,14 @@ public class MicrowaveServerProcessor extends AbstractProcessor {
         }
 
         try {
-            String className = annotatedClass.toString() + "001";
-            JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(className);
-            FreemarkerUtil.handleServer(annotatedClass.toString(), builderFile.openWriter());
+            String className = annotatedClass.toString();
+            String targetClassName = ClassNameUtil.getPackageName(className) +
+                    "._" +
+                    ClassNameUtil.getSimpleClassName(className);
+            JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(targetClassName);
+            FreemarkerUtil.handleServer(targetClassName, builderFile.openWriter());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("MicrowaveServerProcessor handleAnnotationClass Exception:{}", ExceptionUtils.getStackTrace(e));
         }
 
     }

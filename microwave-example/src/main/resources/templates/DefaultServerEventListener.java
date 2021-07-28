@@ -1,4 +1,4 @@
-package io.microwave.server;
+package io.microwave.example.listener;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.event.ApplicationEventListener;
@@ -6,6 +6,7 @@ import io.micronaut.context.event.StartupEvent;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.microwave.annotation.ExportService;
+import io.microwave.annotation.MicrowaveServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -22,7 +23,8 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
-public abstract class AbstractServerEventListener implements ApplicationEventListener<StartupEvent> {
+@MicrowaveServer
+public class DefaultServerEventListener implements ApplicationEventListener<StartupEvent> {
     private AtomicBoolean status = new AtomicBoolean(false);
 
     @Inject
@@ -37,6 +39,8 @@ public abstract class AbstractServerEventListener implements ApplicationEventLis
         this.status.set(true);
         Collection<BeanDefinition<?>> beanDefinitions = applicationContext.getBeanDefinitions(Qualifiers.byStereotype(ExportService.class));
         register(beanDefinitions);
+        String s = applicationContext.getBean(String.class);
+
     }
 
     public void register(Collection<BeanDefinition<?>> beanDefinitions) {
@@ -71,6 +75,12 @@ public abstract class AbstractServerEventListener implements ApplicationEventLis
         }
     }
 
-    protected abstract void handleProcessor(TMultiplexedProcessor processor, String beanName, Object bean);
+
+    protected void handleProcessor(TMultiplexedProcessor processor, String beanName, Object bean) {
+
+//        processor.registerProcessor(beanDefinition.getName(), new SomeService.Processor<>(i));
+    }
+
+
 
 }
