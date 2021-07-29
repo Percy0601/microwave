@@ -7,6 +7,7 @@ import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.microwave.annotation.ExportService;
 import io.microwave.annotation.MicrowaveServer;
+import io.microwave.server.MicrowaveServerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -40,7 +41,14 @@ public class DefaultServerEventListener implements ApplicationEventListener<Star
         Collection<BeanDefinition<?>> beanDefinitions = applicationContext.getBeanDefinitions(Qualifiers.byStereotype(ExportService.class));
         register(beanDefinitions);
         String s = applicationContext.getBean(String.class);
+        MicrowaveServerFactory microwaveServerFactory = new MicrowaveServerFactory();
+        microwaveServerFactory.start();
+    }
 
+    private TMultiplexedProcessor handleProcessor() {
+        TMultiplexedProcessor processor = new TMultiplexedProcessor();
+        String aa = applicationContext.getBean(String);
+        processor.registerProcessor(new SomeService.Processor<>);
     }
 
     public void register(Collection<BeanDefinition<?>> beanDefinitions) {

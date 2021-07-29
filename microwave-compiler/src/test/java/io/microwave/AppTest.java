@@ -30,4 +30,10 @@ public class AppTest {
         log.info("=========packageName:{}, simpleClassName:{}", packageName, simpleClassName);
     }
 
+    @Test
+    void testParamName() {
+        String paramName = ClassNameUtil.getParamName("MetaHolder");
+        log.info("paramName:{}", paramName);
+    }
+
 }

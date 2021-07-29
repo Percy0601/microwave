@@ -1,6 +1,5 @@
 package io.microwave.server;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -10,9 +9,11 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.transport.TTransportFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class MicrowaveServerFactory {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     private int port;
     private Thread thread;
     private TMultiplexedProcessor processor;

@@ -107,6 +107,21 @@
           </execution>
         </executions>
       </plugin>
+
+
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-compiler-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <source>${maven.compiler.source}</source>-->
+<!--          <target>${maven.compiler.target}</target>-->
+<!--          <encoding>UTF-8</encoding>-->
+<!--          <compilerArguments>-->
+<!--            <verbose />-->
+<!--            <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>-->
+<!--          </compilerArguments>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
     </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
