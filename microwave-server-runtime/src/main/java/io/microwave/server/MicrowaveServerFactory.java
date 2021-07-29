@@ -1,6 +1,8 @@
 package io.microwave.server;
 
+import io.microwave.core.AttachableProcessor;
 import org.apache.thrift.TMultiplexedProcessor;
+import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
@@ -17,16 +19,19 @@ public class MicrowaveServerFactory {
     private int port;
     private Thread thread;
     private TMultiplexedProcessor processor;
+    private AttachableProcessor proxyProcessor;
     // TODO 注册中心等
 
     public MicrowaveServerFactory(TMultiplexedProcessor processor) {
         port = 8761;
         this.processor = processor;
+        proxyProcessor = new AttachableProcessor(processor);
     }
 
     public MicrowaveServerFactory(TMultiplexedProcessor processor, Integer port) {
         this.port = port;
         this.processor = processor;
+        proxyProcessor = new AttachableProcessor(processor);
     }
 
     public void start() {
@@ -43,11 +48,12 @@ public class MicrowaveServerFactory {
                 TTransportFactory transportFactory = new TFramedTransport.Factory();
                 //使用高密度二进制协议
                 TProtocolFactory proFactory = new TBinaryProtocol.Factory();
+
                 TServer server = new TThreadedSelectorServer(new
                         TThreadedSelectorServer.Args(serverTransport)
                         .transportFactory(transportFactory)
                         .protocolFactory(proFactory)
-                        .processor(processor)
+                        .processor(proxyProcessor)
                 );
                 server.serve();
             } catch (TTransportException e) {
