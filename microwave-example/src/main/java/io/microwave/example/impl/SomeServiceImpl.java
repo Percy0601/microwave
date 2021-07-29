@@ -16,12 +16,9 @@ import java.util.Random;
 @ExportService
 public class SomeServiceImpl implements SomeService.Iface {
 
-    public SomeServiceImpl() {
-        log.info("##############1111");
-    }
-
     @Override
     public String echo(String msg) throws TException {
+        log.info("SomeServiceImpl echo: Hello: {}", msg);
         return "Hello " + msg;
     }
 

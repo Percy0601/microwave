@@ -47,8 +47,8 @@ public class DefaultServerEventListener implements ApplicationEventListener<Star
 
     private TMultiplexedProcessor handleProcessor() {
         TMultiplexedProcessor processor = new TMultiplexedProcessor();
-        String aa = applicationContext.getBean(String);
-        processor.registerProcessor(new SomeService.Processor<>);
+        String aa = applicationContext.getBean(String.class);
+        processor.registerProcessor("", new SomeService.Processor<>());
     }
 
     public void register(Collection<BeanDefinition<?>> beanDefinitions) {

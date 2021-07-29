@@ -2,6 +2,7 @@ package io.microwave.compiler.util;
 
 import freemarker.core.ParseException;
 import freemarker.template.*;
+import io.microwave.compiler.model.ServerProcessorEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -12,6 +13,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -36,6 +38,8 @@ public class FreemarkerUtil {
             // 向数据集中添加数据
             root.put("packageName", packageName);
             root.put("simpleClassName", simpleClassName);
+            List<ServerProcessorEntry> entries = MetaHolder.getConverterEntries();
+            root.put("entries", entries);
             // 第六步：创建一个Writer对象，一般创建一FileWriter对象，指定生成的文件名。
             //        Writer out = new FileWriter(new File("/Users/percy/work/project/promogateway/promoGatewayService/src/main/resources/template/response/query/"));
             // 第七步：调用模板对象的process方法输出文件。
