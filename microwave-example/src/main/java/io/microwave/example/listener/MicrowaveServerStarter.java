@@ -1,10 +1,14 @@
 package io.microwave.example.listener;
 
 import io.microwave.annotation.MicrowaveServer;
-import lombok.extern.slf4j.Slf4j;
+import io.microwave.annotation.Reference;
+import io.training.thrift.api.SomeService;
 
-@Slf4j
 @MicrowaveServer
-public class MicrowaveServerStarter {
+public interface MicrowaveServerStarter {
+
+    @Reference
+    SomeService.Iface someService();
+
 
 }

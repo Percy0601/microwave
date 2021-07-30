@@ -6,9 +6,8 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RUNTIME)
-public @interface MicrowaveServer {
-    String register() default  "";
-    int port() default 8761;
+public @interface Reference {
+
 }

@@ -6,7 +6,7 @@ import io.micronaut.context.event.StartupEvent;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.microwave.core.protocol.AttachableProcessor;
-import io.microwave.annotation.ExportService;
+import io.microwave.annotation.Export;
 import io.microwave.annotation.MicrowaveServer;
 import io.microwave.server.MicrowaveServerFactory;
 import lombok.extern.slf4j.Slf4j;

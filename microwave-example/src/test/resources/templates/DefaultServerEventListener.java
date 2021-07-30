@@ -5,7 +5,7 @@ import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
-import io.microwave.annotation.ExportService;
+import io.microwave.annotation.Export;
 import io.microwave.annotation.MicrowaveServer;
 import io.microwave.server.MicrowaveServerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class DefaultServerEventListener implements ApplicationEventListener<Star
         }
         // 防止重复注册
         this.status.set(true);
-        Collection<BeanDefinition<?>> beanDefinitions = applicationContext.getBeanDefinitions(Qualifiers.byStereotype(ExportService.class));
+        Collection<BeanDefinition<?>> beanDefinitions = applicationContext.getBeanDefinitions(Qualifiers.byStereotype(Export.class));
         register(beanDefinitions);
         String s = applicationContext.getBean(String.class);
         MicrowaveServerFactory microwaveServerFactory = new MicrowaveServerFactory();

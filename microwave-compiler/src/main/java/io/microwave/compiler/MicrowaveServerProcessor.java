@@ -1,5 +1,6 @@
 package io.microwave.compiler;
 
+import io.microwave.annotation.MicrowaveServer;
 import io.microwave.compiler.util.ClassNameUtil;
 import io.microwave.compiler.util.FreemarkerUtil;
 import io.microwave.compiler.util.MetaHolder;
@@ -12,10 +13,12 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @SupportedAnnotationTypes(value = {"io.microwave.annotation.MicrowaveServer"})
@@ -38,8 +41,9 @@ public class MicrowaveServerProcessor extends AbstractProcessor {
         if(!annotationElement.toString().equals("io.microwave.annotation.MicrowaveServer")) {
             return;
         }
-
         try {
+            MicrowaveServer ms = annotatedClass.getAnnotation(MicrowaveServer.class);
+            ms.port();
             String className = annotatedClass.toString();
             String targetClassName = ClassNameUtil.getPackageName(className) +
                     "._" +

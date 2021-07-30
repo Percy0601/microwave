@@ -34,7 +34,7 @@ public class FreemarkerUtil {
             Template template = configuration.getTemplate("microwave-server.ftl");
 
             // 第五步：创建一个模板使用的数据集，可以是pojo也可以是map。一般是Map。
-            Map<String, Object> root = new HashMap();
+            Map<String, Object> root = new HashMap<>();
             // 向数据集中添加数据
             root.put("packageName", packageName);
             root.put("simpleClassName", simpleClassName);

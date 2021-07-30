@@ -1,6 +1,6 @@
 package io.microwave.example.impl;
 
-import io.microwave.annotation.ExportService;
+import io.microwave.annotation.Export;
 import io.training.thrift.api.SomeService;
 import io.training.thrift.api.User;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import java.util.Random;
 
 @Slf4j
 @Singleton
-@ExportService
+@Export
 public class SomeServiceImpl implements SomeService.Iface {
 
     @Override
