@@ -1,4 +1,4 @@
-package io.microwave.core;
+package io.microwave.core.protocol;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
@@ -20,8 +20,7 @@ public class AttachableProcessor implements TProcessor {
     public boolean process(TProtocol in, TProtocol out) throws TException {
         if (in instanceof AttachableBinaryProtocol) {
             AttachableBinaryProtocol serverProtocol = (AttachableBinaryProtocol) in;
-            serverProtocol.markTFramedTransport(in);
-            TMessage tMessage = serverProtocol.readMessageBegin();
+            TMessage message = serverProtocol.readMessageBegin();
             serverProtocol.readFieldZero();
             Map<String, String> headInfo = serverProtocol.getAttachment();
             log.info("读取到的隐式参数:{}", headInfo);
@@ -38,7 +37,7 @@ public class AttachableProcessor implements TProcessor {
 //                String hostAddress = ((TSocket) transport).getSocket().getRemoteSocketAddress().toString();
 //                TraceUtils.submitAdditionalAnnotation(Constants.TRACE_THRIFT_SERVER, hostAddress);
 //            }
-            serverProtocol.resetTFramedTransport(in);
+            serverProtocol.resetMultiTFramedTransport(in);
         }
         boolean result = realProcessor.process(in, out);
         return result;

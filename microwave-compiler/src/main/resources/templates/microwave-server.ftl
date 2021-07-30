@@ -5,10 +5,12 @@ import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.qualifiers.Qualifiers;
+import io.microwave.core.protocol.AttachableProcessor;
 import io.microwave.annotation.ExportService;
 import io.microwave.annotation.MicrowaveServer;
 import io.microwave.server.MicrowaveServerFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.thrift.TProcessor;
 import org.apache.thrift.TMultiplexedProcessor;
 
 import javax.inject.Inject;
@@ -41,7 +43,9 @@ public class ${simpleClassName} implements ApplicationEventListener<StartupEvent
         TMultiplexedProcessor processor = new TMultiplexedProcessor();
     <#list entries as entry>
         ${entry.implClassName} ${entry.paramName} = applicationContext.getBean(${entry.implClassName}.class);
-        processor.registerProcessor("${entry.registerName}", new ${entry.interfaceName}.Processor<>(${entry.paramName}));
+        TProcessor tprocessor = new ${entry.interfaceName}.Processor<>(${entry.paramName});
+        AttachableProcessor proxyProcessor = new AttachableProcessor(tprocessor);
+        processor.registerProcessor("${entry.registerName}", proxyProcessor);
     </#list>
         return processor;
     }

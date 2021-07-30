@@ -1,9 +1,8 @@
 package io.microwave.server;
 
-import io.microwave.core.AttachableProcessor;
+import io.microwave.core.protocol.AttachableBinaryProtocol;
+import io.microwave.core.protocol.AttachableProcessor;
 import org.apache.thrift.TMultiplexedProcessor;
-import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
@@ -47,8 +46,8 @@ public class MicrowaveServerFactory {
                 //异步IO，需要使用TFramedTransport，它将分块缓存读取。
                 TTransportFactory transportFactory = new TFramedTransport.Factory();
                 //使用高密度二进制协议
-                TProtocolFactory proFactory = new TBinaryProtocol.Factory();
-
+                //TProtocolFactory proFactory = new TBinaryProtocol.Factory();
+                TProtocolFactory proFactory = new AttachableBinaryProtocol.Factory();
                 TServer server = new TThreadedSelectorServer(new
                         TThreadedSelectorServer.Args(serverTransport)
                         .transportFactory(transportFactory)

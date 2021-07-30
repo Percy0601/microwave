@@ -1,8 +1,9 @@
-package io.microwave.core;
+package io.microwave.core.protocol;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TIOStreamTransport;
+import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,6 +114,60 @@ public class AttachableBinaryProtocol extends TBinaryProtocol {
         return attachment.size() > 0;
     }
 
+    public void resetMultiTFramedTransport(TProtocol in) {
+        try {
+            Field readBuffer_ = AttachableBinaryProtocol.TFramedTransportFieldsCache.getInstance()
+                    .getTFramedTransportReadBuffer();
+            Field buf_ = AttachableBinaryProtocol.TFramedTransportFieldsCache.getInstance()
+                    .getTMemoryInputTransportBuf();
+            if (readBuffer_ == null || buf_ == null) {
+                return;
+            }
+            TMemoryInputTransport stream = (TMemoryInputTransport) readBuffer_.get(in.getTransport());
+            byte[] buf = (byte[]) (buf_.get(stream));
+            stream.reset(buf, 0, buf.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class TFramedTransportFieldsCache {
+        private static AttachableBinaryProtocol.TFramedTransportFieldsCache instance;
+        private final Field readBuffer_;
+        private final Field buf_;
+        private final String TFramedTransport_readBuffer_ = "readBuffer_";
+        private final String TMemoryInputTransport_buf_ = "buf_";
+
+        private TFramedTransportFieldsCache() throws Exception {
+            readBuffer_ = org.apache.thrift.transport.TFramedTransport.class
+                    .getDeclaredField(TFramedTransport_readBuffer_);
+            readBuffer_.setAccessible(true);
+            buf_ = org.apache.thrift.transport.TMemoryInputTransport.class
+                    .getDeclaredField(TMemoryInputTransport_buf_);
+            buf_.setAccessible(true);
+        }
+
+        public static AttachableBinaryProtocol.TFramedTransportFieldsCache getInstance()
+                throws Exception {
+            if (instance == null) {
+                synchronized (AttachableBinaryProtocol.TFramedTransportFieldsCache.class) {
+                    if (instance == null) {
+                        instance = new AttachableBinaryProtocol.TFramedTransportFieldsCache();
+                    }
+                }
+            }
+            return instance;
+        }
+
+        public Field getTFramedTransportReadBuffer() {
+            return readBuffer_;
+        }
+
+        public Field getTMemoryInputTransportBuf() {
+            return buf_;
+        }
+    }
+
     /*
      * 重置TFramedTransport流，不影响Thrift原有流程
      */
@@ -159,7 +214,6 @@ public class AttachableBinaryProtocol extends TBinaryProtocol {
 
     @Override
     public TMessage readMessageBegin() throws TException {
-        markTFramedTransport(this);
         TMessage tMessage = super.readMessageBegin();
         readFieldZero();
 
@@ -170,7 +224,7 @@ public class AttachableBinaryProtocol extends TBinaryProtocol {
 //        } else if (tMessage.type == TMessageType.REPLY) {
 ////            TraceUtils.endAndSendLocalTracer();
 //        }
-        resetTFramedTransport(this);
+        resetMultiTFramedTransport(this);
         tMessage = super.readMessageBegin();
         log.info("==============attachment:{}", attachment);
 
