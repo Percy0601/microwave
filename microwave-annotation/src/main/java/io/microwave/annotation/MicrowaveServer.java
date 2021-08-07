@@ -6,9 +6,21 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * 配置服务
+ */
 @Target({ElementType.TYPE})
 @Retention(RUNTIME)
 public @interface MicrowaveServer {
-    String register() default  "";
+    /**
+     * 服务名称
+     * @return
+     */
+    String application() default "";
+
+    /**
+     * 服务注册端口号
+     * @return
+     */
     int port() default 8761;
 }

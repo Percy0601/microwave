@@ -35,7 +35,7 @@ public class ${simpleClassName} implements ApplicationEventListener<StartupEvent
         // 防止重复注册
         this.status.set(true);
         TMultiplexedProcessor processor = handleProcessor();
-        MicrowaveServerFactory microwaveServerFactory = new MicrowaveServerFactory(processor);
+        MicrowaveServerFactory microwaveServerFactory = new MicrowaveServerFactory(processor, ${serverPort});
         microwaveServerFactory.start();
     }
 

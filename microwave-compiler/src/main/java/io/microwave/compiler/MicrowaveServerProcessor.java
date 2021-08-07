@@ -43,7 +43,8 @@ public class MicrowaveServerProcessor extends AbstractProcessor {
         }
         try {
             MicrowaveServer ms = annotatedClass.getAnnotation(MicrowaveServer.class);
-            ms.port();
+            Integer serverPort = ms.port();
+            MetaHolder.setServerPort(serverPort);
             String className = annotatedClass.toString();
             String targetClassName = ClassNameUtil.getPackageName(className) +
                     "._" +

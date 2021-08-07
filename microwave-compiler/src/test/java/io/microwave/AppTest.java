@@ -3,6 +3,7 @@ package io.microwave;
 
 import io.microwave.compiler.util.ClassNameUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,6 +35,12 @@ public class AppTest {
     void testParamName() {
         String paramName = ClassNameUtil.getParamName("MetaHolder");
         log.info("paramName:{}", paramName);
+    }
+
+    @Test
+    void testClassUtils() {
+        String className = ClassUtils.getName(int.class);
+        log.info("=======className:{}", className);
     }
 
 }

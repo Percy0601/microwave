@@ -6,6 +6,9 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * 导出服务
+ */
 @Target({ElementType.TYPE})
 @Retention(RUNTIME)
 public @interface Export {

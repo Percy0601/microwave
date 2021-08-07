@@ -15,7 +15,7 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Set;
 
-@SupportedAnnotationTypes(value = {"io.microwave.annotation.ExportService"})
+@SupportedAnnotationTypes(value = {"io.microwave.annotation.Export"})
 @SupportedSourceVersion(value = SourceVersion.RELEASE_8)
 public class ExportServiceProcessor extends AbstractProcessor {
     private Logger log = LoggerFactory.getLogger(ExportServiceProcessor.class);

@@ -1,21 +1,41 @@
 package io.microwave.compiler.util;
 
+import io.microwave.compiler.model.ReferenceProcessorEntry;
 import io.microwave.compiler.model.ServerProcessorEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
+import org.checkerframework.checker.units.qual.A;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class MetaHolder {
-
+    private static Integer serverPort = 8761;
     private static ConcurrentHashMap<String, List<? extends TypeMirror>> exportServices = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, ReferenceProcessorEntry> referenceServices = new ConcurrentHashMap<>();
 
     private MetaHolder() {
 
+    }
+
+    public static void setServerPort(Integer _serverPort) {
+        serverPort = _serverPort;
+    }
+
+    public static Integer getServerPort() {
+        return serverPort;
+    }
+
+    public static void addReferService(String referService, ReferenceProcessorEntry referServiceEntry) {
+        referenceServices.put(referService, referServiceEntry);
+    }
+
+    public static List<ReferenceProcessorEntry> getReferService(String referService, List<ReferenceProcessorEntry> referServiceEntry) {
+        return new ArrayList<>(referenceServices.values());
     }
 
     public static void addExportService(String exportService, List<? extends TypeMirror> types) {

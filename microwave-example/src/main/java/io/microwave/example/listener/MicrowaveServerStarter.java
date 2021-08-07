@@ -10,5 +10,4 @@ public interface MicrowaveServerStarter {
     @Reference
     SomeService.Iface someService();
 
-
 }
