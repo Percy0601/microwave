@@ -3,13 +3,10 @@ package io.microwave.compiler.util;
 import io.microwave.compiler.model.ReferenceProcessorEntry;
 import io.microwave.compiler.model.ServerProcessorEntry;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
-import org.checkerframework.checker.units.qual.A;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j

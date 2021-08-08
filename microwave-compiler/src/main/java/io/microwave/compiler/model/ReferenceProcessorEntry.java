@@ -13,5 +13,5 @@ public class ReferenceProcessorEntry {
     private Integer minConnection;
     private Integer maxConnection;
     private Integer idleConnection;
-    private List<Method> methodList;
+    private List<MethodElement> methodElements;
 }
