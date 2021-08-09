@@ -1,4 +1,4 @@
-package io.microwave.example.listener;
+package io.microwave.example.starter;
 
 import io.microwave.annotation.MicrowaveServer;
 import io.microwave.annotation.Reference;

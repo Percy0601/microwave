@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.microwave.annotation.Reference;
 import io.microwave.compiler.model.MethodElement;
 import io.microwave.compiler.model.ReferenceProcessorEntry;
+import io.microwave.compiler.util.FreemarkerUtil;
 import io.microwave.compiler.util.MetaHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.JavaFileObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SupportedAnnotationTypes(value = {"io.microwave.annotation.Reference"})
 @SupportedSourceVersion(value = SourceVersion.RELEASE_8)
@@ -35,7 +38,27 @@ public class ReferenceServiceProcessor extends AbstractProcessor {
                 handleAnnotationClass(annotationElement, annotatedClass);
             }
         }
+        handleWrite();
         return true;
+    }
+
+    private void handleWrite() {
+        ConcurrentHashMap<String, ReferenceProcessorEntry> referenceEntries =  MetaHolder.getReferService();
+
+        referenceEntries.forEach((k, v) -> {
+            try {
+                String sourceName = "";
+                int lastDot = k.lastIndexOf('.');
+                if (lastDot > 0) {
+                    sourceName = k.substring(0, lastDot);
+                }
+
+                JavaFileObject builderFile = processingEnv.getFiler().createSourceFile("_" + sourceName + "Proxy");
+                FreemarkerUtil.handleProxy(k, v, builderFile.openWriter());
+            } catch (Exception e) {
+                log.warn("handleWrite Proxy Exception:", e);
+            }
+        });
     }
 
     private void handleAnnotationClass(TypeElement annotationElement, Element annotatedClass) {

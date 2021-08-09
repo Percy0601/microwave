@@ -1,4 +1,4 @@
-package io.microwave.example.listener;
+package io.microwave.example.starter;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.event.ApplicationEventListener;

@@ -31,8 +31,9 @@ public class MetaHolder {
         referenceServices.put(referService, referServiceEntry);
     }
 
-    public static List<ReferenceProcessorEntry> getReferService(String referService, List<ReferenceProcessorEntry> referServiceEntry) {
-        return new ArrayList<>(referenceServices.values());
+
+    public static ConcurrentHashMap<String, ReferenceProcessorEntry> getReferService() {
+        return referenceServices;
     }
 
     public static void addExportService(String exportService, List<? extends TypeMirror> types) {
