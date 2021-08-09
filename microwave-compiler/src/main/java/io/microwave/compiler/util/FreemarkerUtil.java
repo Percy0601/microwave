@@ -22,7 +22,7 @@ public class FreemarkerUtil {
         //Resource resource = new ClassPathResource("template/");
         try {
             // 第一步：创建一个Configuration对象，直接new一个对象。构造方法的参数就是freemarker对于的版本号。
-            Configuration configuration = new Configuration(Configuration.getVersion());
+            Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
             // 第二步：设置模板文件所在的路径。
             configuration.setClassForTemplateLoading(FreemarkerUtil.class, "/templates");
             // 第三步：设置模板文件使用的字符集。一般就是utf-8.

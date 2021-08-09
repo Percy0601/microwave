@@ -1,7 +1,5 @@
 package io.microwave;
 
-import io.training.thrift.api.SomeService;
-import io.training.thrift.api.User;
 import org.apache.thrift.TException;
 
 import java.util.List;

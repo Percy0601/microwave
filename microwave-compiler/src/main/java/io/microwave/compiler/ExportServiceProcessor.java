@@ -31,8 +31,8 @@ public class ExportServiceProcessor extends AbstractProcessor {
     }
 
     private void handleAnnotationClass(TypeElement annotationElement, Element annotatedClass) {
-        log.info("开始处理注解类ExportService:{}", annotatedClass);
-        if(!annotationElement.toString().equals("io.microwave.annotation.ExportService")) {
+        log.info("开始处理注解类Export:{}", annotatedClass);
+        if(!annotationElement.toString().equals("io.microwave.annotation.Export")) {
             return;
         }
         TypeElement te = (TypeElement) annotatedClass;
