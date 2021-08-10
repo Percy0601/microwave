@@ -19,8 +19,8 @@ public class _${simpleClassName}Proxy implements ${className}.Iface {
         }
         synchronized (this) {
             GenericObjectPool.Config config = getPoolConfig();
-<#--            MySomeServicePoolFactory clientPool = new MySomeServicePoolFactory();-->
-            this.pool = new GenericObjectPool<>(null, config);
+            ${packageName}._${simpleClassName}PoolFactory clientPool = new ${packageName}._${simpleClassName}PoolFactory();
+            this.pool = new GenericObjectPool<>(clientPool, config);
             return pool;
         }
     }
@@ -42,16 +42,16 @@ public class _${simpleClassName}Proxy implements ${className}.Iface {
     public ${method.returnType} ${method.name}(
             <#list method.paramTypes as paramType>
                 <#if paramType_index < method.paramTypes?size - 1>
-                  paramType var${paramType_index},
+                  ${paramType} var${paramType_index},
                 <#else>
-                  paramType var${paramType_index}
+                    ${paramType} var${paramType_index}
                 </#if>
             </#list>
         ) throws TException {
         boolean flag = true;
-        ${simpleClassName}.Client client = null;
+        ${className}.Client client = null;
         try {
-            client = (${simpleClassName}.Client)getPool().borrowObject();
+            client = (${className}.Client)getPool().borrowObject();
             ${method.returnType} result = client.${method.name}(
             <#list method.paramTypes as paramType>
                 <#if paramType_index < method.paramTypes?size - 1>
@@ -61,10 +61,12 @@ public class _${simpleClassName}Proxy implements ${className}.Iface {
                 </#if>
             </#list>
             );
-            return result;
+            <#if method.returnType != "void">
+                return result;
+            </#if>
         } catch (Exception e) {
             flag = false;
-            log.warn("${simpleClassName}.${method.name} invoke error: exception:", e);
+            log.warn("${className}.${method.name} invoke error: exception:", e);
         } finally {
             try {
                 if(flag){
@@ -73,10 +75,14 @@ public class _${simpleClassName}Proxy implements ${className}.Iface {
                     pool.invalidateObject(client);
                 }
             } catch (Exception e) {
-                log.warn("${simpleClassName}.${method.name} close error: exception:", e);
+                log.warn("${className}.${method.name} close error: exception:", e);
             }
         }
-        return null;
+        <#if method.returnType == "int">
+            return 0;
+        <#else>
+            return null;
+        </#if>
     }
     </#list>
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.microwave.annotation.Reference;
 import io.microwave.compiler.model.MethodElement;
 import io.microwave.compiler.model.ReferenceProcessorEntry;
+import io.microwave.compiler.util.ClassNameUtil;
 import io.microwave.compiler.util.FreemarkerUtil;
 import io.microwave.compiler.util.MetaHolder;
 import org.slf4j.Logger;
@@ -25,11 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SupportedAnnotationTypes(value = {"io.microwave.annotation.Reference"})
 @SupportedSourceVersion(value = SourceVersion.RELEASE_8)
 public class ReferenceServiceProcessor extends AbstractProcessor {
     private Logger log = LoggerFactory.getLogger(ReferenceServiceProcessor.class);
+    private volatile AtomicBoolean executed = new AtomicBoolean(false);
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (TypeElement annotationElement: annotations) {
@@ -38,13 +41,15 @@ public class ReferenceServiceProcessor extends AbstractProcessor {
                 handleAnnotationClass(annotationElement, annotatedClass);
             }
         }
-        handleWrite();
+        if(!executed.getAndSet(true)) {
+            handleWrite();
+        }
+
         return true;
     }
 
     private void handleWrite() {
         ConcurrentHashMap<String, ReferenceProcessorEntry> referenceEntries =  MetaHolder.getReferService();
-
         referenceEntries.forEach((k, v) -> {
             try {
                 String sourceName = "";
@@ -52,9 +57,12 @@ public class ReferenceServiceProcessor extends AbstractProcessor {
                 if (lastDot > 0) {
                     sourceName = k.substring(0, lastDot);
                 }
-
-                JavaFileObject builderFile = processingEnv.getFiler().createSourceFile("_" + sourceName + "Proxy");
+                String packageName = ClassNameUtil.getPackageName(sourceName);
+                String simpleClassName = ClassNameUtil.getSimpleClassName(sourceName);
+                JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "._" + simpleClassName + "Proxy");
                 FreemarkerUtil.handleProxy(k, v, builderFile.openWriter());
+                JavaFileObject builderFactoryFile = processingEnv.getFiler().createSourceFile(packageName + "._" + simpleClassName + "PoolFactory");
+                FreemarkerUtil.handlePoolFactory(k, v, builderFactoryFile.openWriter());
             } catch (Exception e) {
                 log.warn("handleWrite Proxy Exception:", e);
             }
@@ -68,6 +76,7 @@ public class ReferenceServiceProcessor extends AbstractProcessor {
         }
         Reference reference = annotatedClass.getAnnotation(Reference.class);
         ExecutableElement executableElement = (ExecutableElement) annotatedClass;
+
         DeclaredType interfaceClass = (DeclaredType)executableElement.getReturnType();
         List<? extends Element> elements = interfaceClass.asElement().getEnclosedElements();
         if(elements.isEmpty()) {
